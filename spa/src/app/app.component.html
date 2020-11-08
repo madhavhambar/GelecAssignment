@@ -1,44 +1,52 @@
 <div class="container" style="padding: 20px;">
-  <h2>Levenshtein Distance Algorithm</h2>
-  <form *ngIf="LevenshteinDistanceForm" (submit)="GetDistanceAlgorithm()" [formGroup]="LevenshteinDistanceForm">
-    <div class="form-row">
-      <div class="col">
-        <input type="text" class="form-control" placeholder="String 1" formControlName="string1">
+  <div *ngIf="token">
+    <h2>Levenshtein Distance Algorithm</h2>
+    <form *ngIf="LevenshteinDistanceForm" (submit)="GetDistanceAlgorithm()" [formGroup]="LevenshteinDistanceForm">
+      <div class="form-row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="String 1" formControlName="string1">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="String 2" formControlName="string2">
+        </div>
+        <div class="col-2">
+          <input type="submit" class="btn btn-info" name="Submit">
+        </div>
       </div>
-      <div class="col">
-        <input type="text" class="form-control" placeholder="String 2" formControlName="string2">
-      </div>
-      <div class="col-2">
-        <input type="submit" class="btn btn-info" name="Submit">
-      </div>
+      <p class="text-danger" *ngIf="validationMassage">
+        {{validationMassage}}
+      </p>
+    </form>
+
+    <br />
+    <div *ngIf="ResultDto">
+      <h3>Result</h3>
+      <table class="table table-bordered">
+        <thead>
+          <tr style="background-color: #c9c9c9;">
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col" *ngFor="let c of s1Arr">{{c}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th style="background-color: #c9c9c9;" scope="col"></th>
+            <td style="background-color: #8BA7BC;" scope="col"
+              *ngFor="let in of counter(ResultDto?.string1?.length+1) ;let i = index">{{i}}</td>
+          </tr>
+          <tr *ngFor="let row of ResultDto.matrix;let i = index;let lastR = last">
+            <th style="background-color: #c9c9c9;">{{s2Arr[i]}}</th>
+            <td style="background-color: #8BA7BC;">{{i+1}}</td>
+            <td *ngFor="let col of row;let lastC = last"
+              [ngStyle]="{'background-color': lastR && lastC ? 'rgb(54 152 226)':''}">
+              {{col}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-  </form>
-
-  <br />
-  <div *ngIf="ResultDto">
-    <h3>Result</h3>
-    <table class="table table-bordered">
-      <thead>
-        <tr style="background-color: #c9c9c9;">
-          <th scope="col"></th>
-          <th scope="col"></th>
-          <th scope="col" *ngFor="let c of s1Arr">{{c}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th style="background-color: #c9c9c9;" scope="col"></th>
-          <td style="background-color: #8BA7BC;" scope="col"
-            *ngFor="let in of counter(ResultDto?.string1?.length+1) ;let i = index">{{i}}</td>
-        </tr>
-        <tr *ngFor="let row of ResultDto.matrix;let i = index;let lastR = last">
-          <th style="background-color: #c9c9c9;">{{s2Arr[i]}}</th>
-          <td style="background-color: #8BA7BC;">{{i+1}}</td>
-          <td *ngFor="let col of row;let lastC = last" [ngStyle]="{'background-color': lastR && lastC ? 'rgb(54 152 226)':''}">
-            {{col}}</td>
-        </tr>
-      </tbody>
-    </table>
   </div>
-
+  <div *ngIf="!token">
+    Fetching Token
+  </div>
 </div>
